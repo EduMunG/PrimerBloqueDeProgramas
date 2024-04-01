@@ -49,8 +49,28 @@ State DFA:: getEstado(int ID) {
     return temp;
 }
 
-void DFA::escribirPath(const std::string& archivo,const std::string& path){
-    std::ofstream outfile(archivo, std::ios::out);
+bool DFA::esEstadosDePrecedencia(State estado, char letra){
+    bool encontrado = false;
+    set<State>::iterator it= setDeEstados.begin();
+    set<int> sigID;
+    while (((*it)!=estado)&&!encontrado)
+    {
+        sigID=(*it).getNextStateID(letra);
+        for (int i : sigID)
+        {
+            if (i==estado.identifier)
+            {
+                encontrado =true;
+            }
+            else
+                it++;
+        }
+    }
+    return encontrado;
+}
+
+void DFA::escribirPath(const std::string& archivo,std::string& path){
+    std::ofstream outfile(archivo, std::ios::app);
     if (outfile.is_open())
     {
         outfile.clear();
@@ -85,35 +105,49 @@ void DFA::borrarPathID(vector<int>& pathStack, int ID){
 }
 
 
-void DFA::detPalabra(const std::vector<string>parrafos, const string archivo, std::string& path){
+void DFA::detPalabra(const std::vector<string>parrafos, const string archivo, std::string& path, int& idActual, int& parra, int& palabra){
    
-    int parra=0;
-    int palabra=0;
     for (string parrafo:parrafos)
     {
-        for (char letra: parrafo)
-        {
-            if (letra!=' ')
-            {
-                if (sigma.simboloEnAlfabeto(letra))
-                {
-                    path+=letra;
-                    set<State>::iterator it=setDeEstados.begin();
-                    for (;it!=setDeEstados.end();it++)
-                    {
-                        set<int> sigID= (*it).getNextStateID(letra);
-                    }
-                }
-                else{
-                    path="";
-                }
-            }
-            else 
-                palabra++;
-        }
+        path="";
+        idActual=estadoInicial.identifier;
+        checarParrafo(parrafo, archivo,path,idActual,parra,palabra);
         parra++;
+        palabra=0;
     }
-    
+}
 
+void DFA::checarParrafo(const std::string parrafo, const string archivo, std::string& path, int& idActual, int& parra, int& palabra){ 
+    for (char letra : parrafo) {
+        if (letra != ' ') {
+            if (sigma.simboloEnAlfabeto(letra)) {
+                // Verificar si hay una transición válida desde el estado actual para la letra actual
+                set<int> sigID = getEstado(idActual).getNextStateID(letra);
+                if (!sigID.empty()) {
+                    // Avanzar al siguiente estado
+                    idActual = *sigID.begin();
+                    // Anadir la letra al camino (palabra)
+                    path += letra;
+                    // Verificar si el estado actual es un estado final
+                    if (aceptabe(getEstado(idActual))) {
+                        string final="";
+                        final+="Palabra encontrada: "+path + ", Palabra No. " + std::to_string(palabra) + ", Párrafo No. " + to_string(parra);
+                        escribirPath(archivo,final);
+                    }
+                } else {
+                    // Si no hay una transición válida, reiniciar el camino y el estado actual
+                    path = "";
+                    idActual = estadoInicial.identifier;
+                }
+            } else {
+                // Si la letra no está en el alfabeto, reiniciar el camino y el estado actual
+                path = "";
+                idActual = estadoInicial.identifier;
+            }
+        } else {
+            // Incrementar el contador de palabras si encontramos un espacio
+            palabra++;
+        }
+    }
 }
 

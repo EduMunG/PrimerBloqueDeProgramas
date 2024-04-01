@@ -49,9 +49,14 @@ int main() {
     State estadoInicial;
     set<State> setDeEstadosFinales;
     inizializar(sigma,setDeEstados,setDeEstadosFinales,estadoInicial, falla);
+    cout<<sigma<<endl<<estadoInicial<<endl;
     DFA DEefeA(sigma,setDeEstados,estadoInicial,setDeEstadosFinales);
     string paths="";
-    DEefeA.detPalabra(parrafos,"infopalabras.txt",paths);
+    int idActual =1;
+    int parra, palabra;
+    parra=palabra=0;
+    string out="infopalabras.txt";
+    DEefeA.detPalabra(parrafos,out,paths,idActual,parra,palabra);
     return 0;
 }
 
