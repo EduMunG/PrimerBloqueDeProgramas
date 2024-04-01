@@ -15,7 +15,7 @@ private:
     State getEstado(int ID);
     
     //Metodo para encontrar el estado de precedenica
-    bool esEstadosDePrecedencia(State estado, char letra);
+    bool esEstadosDePrecedencia(State estado, char letra,const std::vector<State> visitados);
 
     //Metodo de limpia del DFA
     void clear(void);
@@ -28,16 +28,14 @@ public:
     //Constructor que define un DFA desde una copia de otro DFA
     DFA(DFA& rhsDFA);
     //Metodo que escribe en un archivo especificado los caminos encontrdos  
-    void escribirPath(const std::string& archivo, std::string& path );
+    void escribirPath(const std::string& archivo, const std::string& path );
     //Metodo que checa si el estado es aceptable
     bool aceptabe(const State& stdo);
     //Metodo del automata determinista.
     void detPalabra(const std::vector<string> parrafos, const std::string archivo, std::string& path, int& idActual, int& parra, int& palabra);
     //Metodo para checar parrafo
     void checarParrafo(const std::string parrafo, const string archivo, std::string& path, int& idActual, int& parra, int& palabra);
-    //Metodo para checar letra
-    bool checarLetra(const char letra,const string archivo, std::string& path, int& idActual, int& parra, int& palabra);
-    //Metodo que se quedo del NFA
+    
     void borrarPathID(std::vector<int>& pathStack, int ID);
     ~DFA();
 

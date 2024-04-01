@@ -64,7 +64,8 @@ class State
         
         // Sobrecarga del operador ==.
         bool operator== (const State& rhs) const;
-        
+        //Sobrecvarga del operador !=
+        bool operator!= (const State& rhs) const;
         // Sobrecarga del operador <.
         bool operator< (const State& rhs) const;
 

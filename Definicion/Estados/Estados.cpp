@@ -123,6 +123,19 @@
             return false;
         }
     }
+
+    bool State:: operator!=(const State& rhs) const
+    {
+        if ((this->identifier)!= rhs.identifier)
+        {
+            return true;
+        }
+        else{
+
+            return false;
+        }
+        
+    }
         
     bool State:: operator< (const State& rhs) const
     {

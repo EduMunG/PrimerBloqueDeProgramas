@@ -49,27 +49,20 @@ State DFA:: getEstado(int ID) {
     return temp;
 }
 
-bool DFA::esEstadosDePrecedencia(State estado, char letra){
-    bool encontrado = false;
-    set<State>::iterator it= setDeEstados.begin();
-    set<int> sigID;
-    while (((*it)!=estado)&&!encontrado)
-    {
-        sigID=(*it).getNextStateID(letra);
-        for (int i : sigID)
-        {
-            if (i==estado.identifier)
-            {
-                encontrado =true;
-            }
-            else
-                it++;
-        }
-    }
-    return encontrado;
+bool DFA::esEstadosDePrecedencia(State estadoActual, char letrapasada,const std::vector<State> visitados){
+    if (visitados.empty()) return false; // Si no hay estados visitados, no puede haber precedencia
+
+    const State& ultimoVisitado = visitados.back(); // Accede al último estado visitado
+    set<int> sigID = ultimoVisitado.getNextStateID(letrapasada);
+    return estadoActual.identifier == *sigID.begin();
+    /* set<int> sigID = estado.getNextStateID(letra);
+    return sigID.find(estadoPrevio) != sigID.end(); */
+    /* set<int> sigID = estadoActual.getNextStateID(letra);
+    // Verificar si el estado previo tiene una transición válida con el símbolo actual
+    return sigID.find(estadoPrevio) != sigID.end(); */
 }
 
-void DFA::escribirPath(const std::string& archivo,std::string& path){
+void DFA::escribirPath(const std::string& archivo,const std::string& path){
     std::ofstream outfile(archivo, std::ios::app);
     if (outfile.is_open())
     {
@@ -109,6 +102,7 @@ void DFA::detPalabra(const std::vector<string>parrafos, const string archivo, st
    
     for (string parrafo:parrafos)
     {
+        //cout<<parrafo;
         path="";
         idActual=estadoInicial.identifier;
         checarParrafo(parrafo, archivo,path,idActual,parra,palabra);
@@ -117,37 +111,46 @@ void DFA::detPalabra(const std::vector<string>parrafos, const string archivo, st
     }
 }
 
-void DFA::checarParrafo(const std::string parrafo, const string archivo, std::string& path, int& idActual, int& parra, int& palabra){ 
+void DFA::checarParrafo(const std::string parrafo, const string archivo, std::string& path, int& idActual, int& parra, int& palabra) {
+    std::vector<State> visitados;
+    char pasada;
     for (char letra : parrafo) {
-        if (letra != ' ') {
-            if (sigma.simboloEnAlfabeto(letra)) {
-                // Verificar si hay una transición válida desde el estado actual para la letra actual
-                set<int> sigID = getEstado(idActual).getNextStateID(letra);
-                if (!sigID.empty()) {
-                    // Avanzar al siguiente estado
+        if(letra != ' '){
+            if (sigma.simboloEnAlfabeto(letra)){
+                if (getEstado(idActual) == estadoInicial) {
+                    visitados.push_back(getEstado(idActual));
+                    set<int> sigID = getEstado(idActual).getNextStateID(letra);
                     idActual = *sigID.begin();
-                    // Anadir la letra al camino (palabra)
+                    pasada = letra;
                     path += letra;
-                    // Verificar si el estado actual es un estado final
-                    if (aceptabe(getEstado(idActual))) {
-                        string final="";
-                        final+="Palabra encontrada: "+path + ", Palabra No. " + std::to_string(palabra) + ", Párrafo No. " + to_string(parra);
-                        escribirPath(archivo,final);
-                    }
                 } else {
-                    // Si no hay una transición válida, reiniciar el camino y el estado actual
-                    path = "";
-                    idActual = estadoInicial.identifier;
+                    if (aceptabe(getEstado(idActual))) {
+                        path += letra;
+                        // Guarda al avanzar
+                    }
+                    
+                    if (esEstadosDePrecedencia(getEstado(idActual), pasada, visitados)) {
+                        visitados.push_back(getEstado(idActual));
+                        set<int> sigID = getEstado(idActual).getNextStateID(letra);
+                        idActual = *sigID.begin();
+                        pasada = letra;
+                        path += letra;
+                    }
                 }
-            } else {
-                // Si la letra no está en el alfabeto, reiniciar el camino y el estado actual
-                path = "";
-                idActual = estadoInicial.identifier;
             }
         } else {
-            // Incrementar el contador de palabras si encontramos un espacio
-            palabra++;
+            if (!path.empty()&&aceptabe(getEstado(idActual))) { // Asegurarse de que no se guarde una "palabra" vacía.
+                escribirPath(archivo, "Palabra: " + path + ", Párrafo: " + std::to_string(parra) + ", Palabra #: " + std::to_string(palabra));
+                palabra++;
+            }
+            path = "";
+            idActual = estadoInicial.identifier;
+            visitados.clear();
         }
     }
+    // Verificar si la última palabra del párrafo se procesó correctamente
+    if (!path.empty()&&aceptabe(getEstado(idActual))) {
+        escribirPath(archivo, "Palabra: " + path + ", Párrafo: " + std::to_string(parra) + ", Palabra #: " + std::to_string(palabra));
+        palabra++;
+    }
 }
-
