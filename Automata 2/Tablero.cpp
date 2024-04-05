@@ -1,7 +1,6 @@
 #include <vector>
 #include <string>
 #include <random>
-#include <map>
 #include <ctime>
 
 
@@ -17,16 +16,19 @@ struct Cadena{
         cadenaRojoNegro= "";
     }
 };
-//Generador de la cadena aleatoria
-Cadena selectorAleatorio(){
+
+//Generador aleatorio sin que el usuario haya dado un limite
+Cadena selectorAleatorioLim(int lim){
     Cadena cad; 
     int num;
-    default_random_engine generador(time(NULL));
+    static default_random_engine generador(time(NULL));
+    //Generador de la cadena si es 0 es b y si es 1 es r 
     uniform_int_distribution<int> distribucion(0,1);
-    uniform_int_distribution<int> n(1,4);
-    for (int i = 0; i < n(generador); i++){
+    uniform_int_distribution<int> n(4,100);
+    for (int i = 0; i < lim; i++){
         num = distribucion(generador);
-        cad.cadenaBinaria.insert(cad.cadenaBinaria.begin()+i,num);
+        //cad.cadenaBinaria.insert(cad.cadenaBinaria.begin()+i,num);
+        cad.cadenaBinaria.push_back(num);
         if(num)
             cad.cadenaRojoNegro+="r";
         else

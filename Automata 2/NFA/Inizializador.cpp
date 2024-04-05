@@ -1,7 +1,7 @@
 #include "./NFA.cpp"
 #include "string"
 
-int main(int argc, char const *argv[])
+int inizializador(std::string movimientos1, std::string movimientos2)
 {
     
     set<State> estados;
@@ -47,7 +47,6 @@ int main(int argc, char const *argv[])
     string alfa="rb";
     Alfabeto a(alfa, falla);
     NFA nfa= *new NFA(a,estados,q1,final);
-    std::string movimientos = "rbrbr";
     std::string deadEnds="dead_ends.txt";
     std::string wining="winis.txt";
     std::vector<int> pathStack;
@@ -55,9 +54,8 @@ int main(int argc, char const *argv[])
     set<State> visitados;
     //Para evitar segmentation fault
     int caminoActual=1;
-    nfa.depthSearch(movimientos,q1.identifier,camino,deadEnds,wining, visitados);
-    //NFA2
-    std::string movimientos2="brbrb";
+    nfa.depthSearch(movimientos1,q1.identifier,camino,deadEnds,wining, visitados);
+    //NFA2 automata para empezar en 4
     set<State> final2;
     final2.insert(q13);
     set<State> visitados2;
