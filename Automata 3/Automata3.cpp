@@ -1,13 +1,11 @@
-#include <cstdlib>
 #include <iostream>
 #include <fstream>
-#include <cstdio>
 #include <vector>
 #include "./DFA/DFA.cpp"
 
 using namespace std;
 
-void inizializar(Alfabeto& sigma, set<State>& setDeEstados, set<State> setDeEstadosFinales,State& estadoInicial, bool& falla);
+void inizializar(Alfabeto& sigma, set<State>& setDeEstados, set<State>& setDeEstadosFinales,State& estadoInicial, bool& falla);
 
 int main() {
     //Inicializacion de variables para abrir el texto
@@ -43,19 +41,47 @@ int main() {
     if (!parrafo_actual.empty()) {
         parrafos.push_back(parrafo_actual);
     }
+/*     for (string parra: parrafos)
+    {
+        cout<<parra;
+    }
+ */
+
+    cout<<"A0";
     bool falla;
     Alfabeto sigma;
     set<State> setDeEstados;
     State estadoInicial;
     set<State> setDeEstadosFinales;
+    //Inizializador de estaods 
     inizializar(sigma,setDeEstados,setDeEstadosFinales,estadoInicial, falla);
+    //cout<<sigma<<endl<<estadoInicial<<endl;
+    //set<State>::iterator it=setDeEstadosFinales.begin();
+/*     for (;it!=setDeEstadosFinales.end();it++)
+        cout<<endl<<(*it);
+     */
+    //Inicializador de DFA
+    cout<<"A0";
     DFA DEefeA(sigma,setDeEstados,estadoInicial,setDeEstadosFinales);
+
+    //Inizialzador de varias bariables
+    cout<<"A1";
+    int idActual =estadoInicial.identifier;
+    cout<<"A2";
+    int parra, palabra;
+    cout<<"A3";
+    parra=palabra=0;
+    cout<<"A4";
+    cout<<idActual<<parra<<palabra;
     string paths="";
-    DEefeA.detPalabra(parrafos,"infopalabras.txt",paths);
+    string out="infopalabras.txt";
+
+    //Llamada a funcion
+    DEefeA.detPalabra(parrafos,out,paths,idActual,parra,palabra);
     return 0;
 }
 
-void inizializar(Alfabeto& sigma, set<State>& setDeEstados, set<State> setDeEstadosFinales,State& estadoInicial, bool& falla){
+void inizializar(Alfabeto& sigma, set<State>& setDeEstados, set<State>& setDeEstadosFinales,State& estadoInicial, bool& falla){
     string alfa="feminazltovjr";
     //Poniendo el alfabeto
     sigma =*new Alfabeto(alfa, falla);
