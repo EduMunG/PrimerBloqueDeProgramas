@@ -17,7 +17,7 @@ void menu(){
     cin>>seleccion;
     cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     static default_random_engine generador(time(NULL));
-    uniform_int_distribution<int> n(4,100);
+    uniform_int_distribution<int> n(4,10);
     int lim = n(generador);
 
     
@@ -39,13 +39,12 @@ void menu(){
                 cad1.back()='r';
                 cout<<"Se agrego una r al final para que sirva el automata"<<endl<<cad1<<endl;
             }
-            if (cad2.back()!='b')
-            {
+            if (cad2.back()!='b'){
                 cad2.back()='b';
                 cout<<"Se agrego una b al final para que sirva el automata"<<endl<<cad2<<endl;
             }
 
-            //inizializador(cad1,cad2);
+            inizializador(cad1,cad2);
             break;
             //Manual
         case 2:
@@ -93,7 +92,7 @@ void menu(){
                     cout<<"Se agrego una b al final para que sirva el automata"<<endl<<cad2<<endl;
                 }
             }
-            //inizializador(cad1,cad2);
+            inizializador(cad1,cad2);
             break;
         default:
             break;
@@ -104,22 +103,21 @@ void menu(){
 
 int main(){
 
-    char opc;
+    int opc;
+    system("clear");
+    cout<<"-----1)Generar nuevos movimientos?"<<endl;
+    cout<<"-----2)Utilizar movimientos ya generados"<<endl<<"->";
+    int sel;
     do
     {
-        system("clear");
-        cout<<"-----1)Generar nuevos movimientos?"<<endl;
-        cout<<"-----2)Utilizar movimientos ya generados"<<endl<<"->";
-        int sel;
         cin>>sel;
         cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         if (sel==1)
             menu();
-        else
 
-        cout<<"Repetir? (Y/N)";
+        cout<<"Repetir?\n1)SI\n2)NO";
         cin>>opc;
-    } while (opc!='n' || opc!='N');
+    } while (opc!=2);
     
      
     return 0;
