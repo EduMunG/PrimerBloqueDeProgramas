@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <random>
+
 //Esta funcion hace las permutaciones
 void Permutaciones(int n, std::string& alphabeto, std::string actual, std::string& potencia){
     if (n==0)
@@ -40,31 +42,15 @@ std::ostream& operator<<(std::ostream& os,const std::vector<int> frec){
 }
 
 
-void menu(){
-
-}
-
-
-
 using namespace std;
-int main(){
+int automata1(int n){
     std::string potencia;
     std::string alphabeto = "ab";
-    int n;
-    cout<<"Escribe la potencia del abecedario, si no escribe nada, el programa decidira un numero entre 1 a 1000: ";
-    cin>>n;
     int suma=0;
     for (int i = 1; i <= n; i++)
-    {
         suma+=pow(2,i);
-    } 
-    cout<<suma;
     std::vector<int> freca(suma,0);
     std::vector<int> frecb(suma,0);
-    if (n==1)
-        n=3;
-    if (n>=1000)
-        n=1000;
     //Agrega el inicio y el final de la potencia
     int a=-1; int b=0;
     potencia ="{e";
@@ -93,8 +79,6 @@ int main(){
         }
         
     }
-
-    cout<<freca<<" "<<frecb;
     ofstream File("Frecuencia.txt");
     if (File)
     {
@@ -104,6 +88,7 @@ int main(){
     }
     else
         cout<<"\nEl archivo no pudo ser creado\n";
+
+    system("python3.11 Grafica1.py");
     return 0;
 }
-

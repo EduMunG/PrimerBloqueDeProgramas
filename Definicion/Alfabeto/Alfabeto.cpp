@@ -1,5 +1,9 @@
 /* 
-    Definicion de la clase Alfabetoooo
+
+    EDUARDO MUÑOZ GONZÁLEZ 5BM2
+    ESCOM 
+    TEORIA DE LA COMPUTACION
+    DEFINICION DE ALFABETO
  */
 
 

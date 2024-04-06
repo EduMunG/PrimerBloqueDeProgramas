@@ -1,0 +1,2 @@
+g++ main.cpp -o myApp -std=c++11 -I/usr/local/include -L/usr/local/lib -lsfml-graphics -lsfml-window -lsfml-system -rpath /usr/local/lib
+++ -std=c++11 -I/usr/local/include -L/usr/local/lib -o menu MenuPrincipal.cpp ./Definicion/Estados/Estados.cpp ./Definicion/Alfabeto/Alfabeto.cpp ./Definicion/Transiciones/Transiciones.cpp -lsfml-graphics -lsfml-window -lsfml-system -rpath /usr/local/lib

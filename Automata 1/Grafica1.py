@@ -5,7 +5,7 @@ frecuenciasa = []
 frecuenciasb = []
 
 patron = re.compile(r'\d+')
-with open('Frecuencia.txt', 'r') as file:
+with open('../Frecuencia.txt', 'r') as file:
     for line in file:
         if 'Frecuencia a:' in line:
             frecuenciasa.extend([int(num) for num in patron.findall(line)])

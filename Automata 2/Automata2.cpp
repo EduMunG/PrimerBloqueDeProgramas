@@ -1,25 +1,37 @@
 #include "./NFA/Inizializador.cpp"
 #include "Tablero.cpp"
 #include <iostream>
-#include <limits>
+#include <cstdio>
 
-using namespace std;
+using namespace std; 
 
 //Menu Generador de Movimientos
-void menu(){
-    int seleccion=0;
+void Automata2(int seleccion){
     string cad1, cad2;
     system("clear");
-    cout<<"--------Hacerlo de forma aleatoria o de forma manual?--------"<<endl;
-    cout<<"--------1) Aleatorio"<<endl;
-    cout<<"--------2) Manual"<<endl;
-    cout<<"--------3) Salir"<<endl<<"->";
-    cin>>seleccion;
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     static default_random_engine generador(time(NULL));
     uniform_int_distribution<int> n(4,10);
     int lim = n(generador);
-
+    if (!remove("../Ganadores_1.txt"))
+        cout<<"Archivo Ganadores borrado"<<endl;
+    else
+        cerr<<"Error al encontrar el archivo o no existe"<<endl;   
+    
+    if (!remove("../Ganadores_2.txt"))
+        cout<<"Archivo Ganadores borrado"<<endl;
+    else
+        cerr<<"Error al encontrar el archivo o no existe"<<endl;   
+    
+    switch (seleccion)
+    if (!remove("../dead_ends.txt"))
+        cout<<"Archivo Ganadores borrado"<<endl;
+    else
+        cerr<<"Error al encontrar el archivo o no existe"<<endl;   
+    
+    if (!remove("../dead_ends2.txt"))
+        cout<<"Archivo Ganadores borrado"<<endl;
+    else
+        cerr<<"Error al encontrar el archivo o no existe"<<endl;   
     
     switch (seleccion)
     {
@@ -97,28 +109,5 @@ void menu(){
         default:
             break;
     }
-    
 }
 
-
-int main(){
-
-    int opc;
-    system("clear");
-    cout<<"-----1)Generar nuevos movimientos?"<<endl;
-    cout<<"-----2)Utilizar movimientos ya generados"<<endl<<"->";
-    int sel;
-    do
-    {
-        cin>>sel;
-        cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-        if (sel==1)
-            menu();
-
-        cout<<"Repetir?\n1)SI\n2)NO";
-        cin>>opc;
-    } while (opc!=2);
-    
-     
-    return 0;
-}

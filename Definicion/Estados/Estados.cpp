@@ -1,3 +1,12 @@
+/* 
+
+    EDUARDO MUÑOZ GONZÁLEZ 5BM2
+    ESCOM 
+    TEORIA DE LA COMPUTACION
+    DEFINICION DE ESTADO
+ */
+
+
 #include "Estados.hpp"
     
     State:: State (void):
@@ -49,21 +58,6 @@
         
     }
 
-
-    bool State:: hasEpsTransitions(void)
-    {
-        bool result = false;
-        set<Transiciones>::iterator it = transitions.begin();
-        
-        while ((it!=transitions.end())&&!result)
-        {
-            if ((*it).simbolo == '&') { result = true; }
-            else it++;
-        }
-        
-        return result;
-    }
-    
     int State:: numberOfTransitions (void) const
     {
         return transitions.size();

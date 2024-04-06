@@ -36,7 +36,9 @@ def leer_ruta_desde_archivo(nombre_archivo):
     patron = re.compile(r'\b\d+\b')
     with open(nombre_archivo, "r") as archivo:
         linea = archivo.readline()
-        return [int(n) for n in patron.findall(linea)]
+        ruta=list(map(int,patron.findall(linea)))
+        #int(n) for n in patron.findall(linea)
+        return ruta
     
 def ruta_nueva(nombre_archivo, estado_buscado, indice_buscado):
     import re
@@ -76,6 +78,7 @@ def main():
     running = True
     indice1, indice2 = 0, 0  # Índices para seguir el progreso de cada pieza a través de sus estados
 
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -84,43 +87,73 @@ def main():
         ventana.fill((255, 255, 255))
         dibujar_tablero(ventana)
 
+        # Add a boolean flag to indicate if the game is esperar for a piece to move
+        esperar = False
 
-        # Verifica si ambas piezas aún tienen movimientos restantes
-        if indice1 < len(estados1) and indice2 < len(estados2):
-            # Verifica colisión
-            if estados1[indice1] == estados2[indice2]:
-                print("Colisión detectada. Ajustando ruta...")
-                # Aquí necesitas lógica para ajustar la ruta. Esta es una función de ejemplo
-                # que necesitarías implementar según las reglas de tu juego
-                estados1 = ruta_nueva("winis.txt", estados1, indice1)
-                if estados1 is None:
-                    estados2 = ruta_nueva("Winis2.txt",estados2,indice2)
-                if estados2 is None and estados1 is None:
-                    #escribir "fin de juego " en pantalla
-                    fin_del_juego=True
-            else:
-                # Dibuja las piezas en sus posiciones actuales si no hay colisión
+        if not fin_del_juego:
+            if indice1 < len(estados1) and indice2 < len(estados2):
+                # Check for collision
+                if estados1[indice1] == estados2[indice2]:
+                    print("Potential collision detected.")
+
+                    # Se decide Aleatoriamente que pieza va a esperar\
+                    if random.choice([True, False]):
+                        # Pieza 1 espera, mientras pieza 2 avanza
+                        #restamos el indice, para que busque desde el movimiento pasdado, asi pueda continuar a otro
+                        nueva_ruta2 = ruta_nueva("Winis2.txt", estados2[indice2], indice2)
+                        while nueva_ruta2[indice2-1]!= estados2[indice2-1]:
+                            if nueva_ruta2 is not None:
+                                nueva_ruta2= ruta_nueva("winis.txt",estados2[indice2], indice2)
+                            else: break
+                        indice2-=1
+                        if nueva_ruta2 is not None:
+                            estados2 = nueva_ruta2
+                            print("La segunda pieza ha encontrado otro camino.", nueva_ruta2)
+                        else:
+                            print("No se ha encontrado otra ruta, esperando...")
+                            esperar = True
+                    else:
+                        # Piece 2 waits, Piece 1 finds a new route
+                        nueva_ruta1 = ruta_nueva("winis.txt", estados1[indice1], indice1)
+                        while nueva_ruta1[indice1-1]!= estados1[indice1-1]:
+                            if nueva_ruta1 is not None:
+                                nueva_ruta1= ruta_nueva("winis.txt",estados1[indice1], indice1)
+                            else: break
+                        indice1-=1
+                        if nueva_ruta1 is not None:
+                            estados1 = nueva_ruta1
+                            print("La primera pieza ha encontrado otro camino.",nueva_ruta1)
+                        else:
+                            print("No se ha encontrado otra ruta, esperando...")
+                            esperar = True
+                    
+                    # Si una nueva ruta se ha encontrado, se mueven de inmediato
+                    #sino, esperan
+
+                # Si no esperan, muevelas
+                if not esperar:
+                    if indice1 < len(estados1):
+                        dibujar_pieza(ventana, estados1[indice1], "AZUL")
+                        indice1 += 1
+                    if indice2 < len(estados2):
+                        dibujar_pieza(ventana, estados2[indice2], "VERDE")
+                        indice2 += 1
+            elif indice1 < len(estados1):  #si la otra pieza acabo, que solo se mueva la 1
                 dibujar_pieza(ventana, estados1[indice1], "AZUL")
+                indice1 += 1
+            elif indice2 < len(estados2):  # si la otra pieza acabo, que solamente se mueva la 2
                 dibujar_pieza(ventana, estados2[indice2], "VERDE")
-                indice1 += 1  # Avanza la pieza 1
-                indice2 += 1  # Avanza la pieza 2
-        elif indice1 < len(estados1):  # Solo la pieza 1 tiene movimientos restantes
-            dibujar_pieza(ventana, estados1[indice1], "AZUL")
-            indice1 += 1
-        elif indice2 < len(estados2):  # Solo la pieza 2 tiene movimientos restantes
-            dibujar_pieza(ventana, estados2[indice2], "VERDE")
-            indice2 += 1
+                indice2 += 1
+            else:
+                # No hay mas movimeintos, terminar el juego
+                fin_del_juego = True
         else:
-            # Ninguna pieza tiene movimientos restantes, el juego puede terminar
-            running = False
-        if fin_del_juego:
-            mensaje = fuente.render('Fin del juego, no hay mas rutas', True, (255,255,255))
-            rect= mensaje.get_rect(center=(400/2,400/2))
-            ventana.blit(mensaje,rect)
-
+            mensaje = fuente.render('Fin del juego, no hay más rutas', True, (255, 255, 255))
+            rect = mensaje.get_rect(center=(200, 200))
+            ventana.blit(mensaje, rect)
 
         pygame.display.flip()
-        clock.tick(1)  # Ralentiza el bucle para visualizar el movimiento
+        clock.tick(1)  
 
     pygame.quit()
 

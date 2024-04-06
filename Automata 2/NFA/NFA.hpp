@@ -1,6 +1,15 @@
+/* 
 
-#include "/Users/edu/Documents/ESCOM/5 SEM/Teoria de Computacion/Programas/Definicion/Alfabeto/Alfabeto.cpp"
-#include "/Users/edu/Documents/ESCOM/5 SEM/Teoria de Computacion/Programas/Definicion/Estados/Estados.cpp"
+    EDUARDO MUÑOZ GONZÁLEZ 5BM2
+    ESCOM 
+    TEORIA DE LA COMPUTACION
+    DEFINICION DE UN NFA
+ */
+
+
+
+#include "../../Definicion/Alfabeto/Alfabeto.hpp"
+#include "../../Definicion/Estados/Estados.hpp"
 
 #include <cstdio>
 #include <iostream>

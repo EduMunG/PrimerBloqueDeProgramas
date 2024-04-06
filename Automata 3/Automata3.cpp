@@ -7,9 +7,9 @@ using namespace std;
 
 void inizializar(Alfabeto& sigma, set<State>& setDeEstados, set<State>& setDeEstadosFinales,State& estadoInicial, bool& falla);
 
-int main() {
+int Automata3() {
     //Inicializacion de variables para abrir el texto
-    string pdfPath = "Feminazi.txt";
+    string pdfPath = "Assets/Text/Feminazi.txt";
     string textContent;
     string line;
     ifstream infile(pdfPath);
@@ -47,7 +47,6 @@ int main() {
     }
  */
 
-    cout<<"A0";
     bool falla;
     Alfabeto sigma;
     set<State> setDeEstados;
@@ -65,13 +64,9 @@ int main() {
     DFA DEefeA(sigma,setDeEstados,estadoInicial,setDeEstadosFinales);
 
     //Inizialzador de varias bariables
-    cout<<"A1";
     int idActual =estadoInicial.identifier;
-    cout<<"A2";
     int parra, palabra;
-    cout<<"A3";
     parra=palabra=0;
-    cout<<"A4";
     cout<<idActual<<parra<<palabra;
     string paths="";
     string out="infopalabras.txt";
