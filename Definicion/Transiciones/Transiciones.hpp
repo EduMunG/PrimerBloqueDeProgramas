@@ -14,7 +14,7 @@
 
 
 class Transiciones
-{
+{ 
 public:
         // Atributo que especifica la transción para dicho símbolo.
         char simbolo;

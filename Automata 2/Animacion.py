@@ -67,9 +67,9 @@ def main():
     pygame.display.set_caption("Tablero de Ajedrez")
 
     # Supongamos que estas funciones leen los estados iniciales de las piezas desde los archivos
-    estados1 = leer_ruta_desde_archivo("winis.txt")
+    estados1 = leer_ruta_desde_archivo("Ganadores_1.txt")
     print(estados1)
-    estados2 = leer_ruta_desde_archivo("Winis2.txt")
+    estados2 = leer_ruta_desde_archivo("Ganadores_2.txt")
     print(estados2)
     clock = pygame.time.Clock()
 
@@ -94,16 +94,16 @@ def main():
             if indice1 < len(estados1) and indice2 < len(estados2):
                 # Check for collision
                 if estados1[indice1] == estados2[indice2]:
-                    print("Potential collision detected.")
+                    print("Choque potencia detectado")
 
                     # Se decide Aleatoriamente que pieza va a esperar\
                     if random.choice([True, False]):
                         # Pieza 1 espera, mientras pieza 2 avanza
                         #restamos el indice, para que busque desde el movimiento pasdado, asi pueda continuar a otro
-                        nueva_ruta2 = ruta_nueva("Winis2.txt", estados2[indice2], indice2)
+                        nueva_ruta2 = ruta_nueva("Ganadores_2.txt", estados2[indice2], indice2)
                         while nueva_ruta2[indice2-1]!= estados2[indice2-1]:
                             if nueva_ruta2 is not None:
-                                nueva_ruta2= ruta_nueva("winis.txt",estados2[indice2], indice2)
+                                nueva_ruta2= ruta_nueva("Ganadores_2.txt",estados2[indice2], indice2)
                             else: break
                         indice2-=1
                         if nueva_ruta2 is not None:
@@ -114,10 +114,10 @@ def main():
                             esperar = True
                     else:
                         # Piece 2 waits, Piece 1 finds a new route
-                        nueva_ruta1 = ruta_nueva("winis.txt", estados1[indice1], indice1)
+                        nueva_ruta1 = ruta_nueva("Ganadores_1.txt", estados1[indice1], indice1)
                         while nueva_ruta1[indice1-1]!= estados1[indice1-1]:
                             if nueva_ruta1 is not None:
-                                nueva_ruta1= ruta_nueva("winis.txt",estados1[indice1], indice1)
+                                nueva_ruta1= ruta_nueva("Ganadores_1.txt",estados1[indice1], indice1)
                             else: break
                         indice1-=1
                         if nueva_ruta1 is not None:

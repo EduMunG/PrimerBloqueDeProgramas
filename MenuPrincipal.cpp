@@ -32,7 +32,11 @@ int main() {
     programa3Text.setFillColor(sf::Color::White);
     programa3Text.setPosition(100, 300); // Position it according to your needs
 
-    sf::Text exitText("Exit", font, 50);
+    sf::Text animar("Animar automata 2", font, 20);
+    animar.setFillColor(sf::Color::White);
+    animar.setPosition(250,250);
+
+    sf::Text exitText("Salir", font, 50);
     exitText.setFillColor(sf::Color::White);
     exitText.setPosition(300, 400); // Position it accordingly
     
@@ -59,12 +63,16 @@ int main() {
                     }else if(programa2Manual.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window)))){
                         std:: cout<< "Empezando programa 2 Manualmente! " << std::endl;
                         Automata2(2);
-                    }else if(programa3Text.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window)))){
+                    }else if(animar.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window)))){
+                        std:: cout<< "Animando.. "<< std::endl;
+                        system("python3.11 ./Automata\\ 2/Animacion.py");
+                    }
+                    else if(programa3Text.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window)))){
                         std:: cout<<"Empezando el progrma 3!" << std::endl;
                         Automata3();
                     }
                      else if (exitText.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window)))) {
-                        std::cout << "Exit was clicked!" << std::endl;
+                        std::cout << "Saliendo del programa!" << std::endl;
                         window.close(); // Exit the program
                     }
                 }
@@ -76,6 +84,7 @@ int main() {
         window.draw(programa1Manual);
         window.draw(programa2Aleatorio);
         window.draw(programa2Manual);
+        window.draw(animar);
         window.draw(programa3Text);
         window.draw(exitText);
         window.display();

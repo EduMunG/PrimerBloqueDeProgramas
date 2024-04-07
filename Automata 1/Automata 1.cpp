@@ -77,7 +77,6 @@ int automata1(int n){
             else if(c=='b')
                 frecb[a]++;
         }
-        
     }
     ofstream File("Frecuencia.txt");
     if (File)
@@ -89,6 +88,6 @@ int automata1(int n){
     else
         cout<<"\nEl archivo no pudo ser creado\n";
 
-    system("python3.11 Grafica1.py");
+    system("python3.11 Automata\\ 1/Grafica1.py");
     return 0;
 }

@@ -63,19 +63,6 @@
         return transitions.size();
     }
     
-    vector<int> State:: getEpsTransitions(void) const
-    {
-        vector<int> result;
-        set<Transiciones>::iterator it = transitions.begin();
-        
-        for (;it!=transitions.end(); it++)
-        {
-            if ((*it).simbolo == '&') { result.push_back((*it).idSigEstado);} //cout<< "dentro=" << (*it).idSiguienteEstado << endl;;}
-        }
-        
-        return result;
-    }
-    
     bool State:: symbolIsUsed(char simbolo) const
     {
         

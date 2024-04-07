@@ -53,10 +53,7 @@ class State
 
         // Método que devuelve si tiene transiciones el estado.
         int numberOfTransitions (void) const;
-        
-        // Método que devuelve los estados de las eps-transiciones.
-        vector<int> getEpsTransitions(void) const;
-        
+
         // Método que devuelve si un símbolo es usado en alguna transición.
         bool symbolIsUsed (char symbol) const;
         

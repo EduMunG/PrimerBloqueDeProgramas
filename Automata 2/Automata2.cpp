@@ -12,23 +12,23 @@ void Automata2(int seleccion){
     static default_random_engine generador(time(NULL));
     uniform_int_distribution<int> n(4,10);
     int lim = n(generador);
-    if (!remove("../Ganadores_1.txt"))
+    if (!remove("Ganadores_1.txt"))
         cout<<"Archivo Ganadores borrado"<<endl;
     else
         cerr<<"Error al encontrar el archivo o no existe"<<endl;   
     
-    if (!remove("../Ganadores_2.txt"))
+    if (!remove("Ganadores_2.txt"))
         cout<<"Archivo Ganadores borrado"<<endl;
     else
         cerr<<"Error al encontrar el archivo o no existe"<<endl;   
     
     switch (seleccion)
-    if (!remove("../dead_ends.txt"))
+    if (!remove("dead_ends.txt"))
         cout<<"Archivo Ganadores borrado"<<endl;
     else
         cerr<<"Error al encontrar el archivo o no existe"<<endl;   
     
-    if (!remove("../dead_ends2.txt"))
+    if (!remove("dead_ends2.txt"))
         cout<<"Archivo Ganadores borrado"<<endl;
     else
         cerr<<"Error al encontrar el archivo o no existe"<<endl;   
