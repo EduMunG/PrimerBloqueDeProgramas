@@ -1,14 +1,20 @@
 /* 
-    Transiciones
+
+    EDUARDO MUÑOZ GONZÁLEZ 5BM2
+    ESCOM 
+    TEORIA DE LA COMPUTACION
+    DEFINICION DE TRANSICIONES
  */
+#pragma once
 
 
 #include <cstdio>
 #include <iostream>
 #include <set>
 
+
 class Transiciones
-{
+{ 
 public:
         // Atributo que especifica la transción para dicho símbolo.
         char simbolo;

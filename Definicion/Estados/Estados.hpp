@@ -1,14 +1,21 @@
 /* 
+
+    EDUARDO MUÑOZ GONZÁLEZ 5BM2
+    ESCOM 
+    TEORIA DE LA COMPUTACION
+    DEFINICION DE ESTADO
  */
+#pragma once
 
 
 
-#include "../Transiciones/Transiciones.cpp"
-
+//#include "../Transiciones/Transiciones.cpp"
+#include "../Transiciones/Transiciones.hpp"
 #include <cstdio>
 #include <iostream>
 #include <set>
 #include <vector>
+
 
 using namespace std;
     
@@ -44,15 +51,9 @@ class State
         // Método que devuelve el identificador del siguiente estado dado un símbolo.
         set<int> getNextStateID (char symbol) const;
 
-        // Método que devuelve si existen eps-transiciones;
-        bool hasEpsTransitions(void);
-        
         // Método que devuelve si tiene transiciones el estado.
         int numberOfTransitions (void) const;
-        
-        // Método que devuelve los estados de las eps-transiciones.
-        vector<int> getEpsTransitions(void) const;
-        
+
         // Método que devuelve si un símbolo es usado en alguna transición.
         bool symbolIsUsed (char symbol) const;
         

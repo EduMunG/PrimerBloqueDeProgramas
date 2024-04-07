@@ -1,25 +1,37 @@
 #include "./NFA/Inizializador.cpp"
 #include "Tablero.cpp"
 #include <iostream>
-#include <limits>
+#include <cstdio>
 
-using namespace std;
+using namespace std; 
 
 //Menu Generador de Movimientos
-void menu(){
-    int seleccion=0;
+void Automata2(int seleccion){
     string cad1, cad2;
     system("clear");
-    cout<<"--------Hacerlo de forma aleatoria o de forma manual?--------"<<endl;
-    cout<<"--------1) Aleatorio"<<endl;
-    cout<<"--------2) Manual"<<endl;
-    cout<<"--------3) Salir"<<endl<<"->";
-    cin>>seleccion;
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     static default_random_engine generador(time(NULL));
-    uniform_int_distribution<int> n(4,100);
+    uniform_int_distribution<int> n(4,10);
     int lim = n(generador);
-
+    if (!remove("Ganadores_1.txt"))
+        cout<<"Archivo Ganadores borrado"<<endl;
+    else
+        cerr<<"Error al encontrar el archivo o no existe"<<endl;   
+    
+    if (!remove("Ganadores_2.txt"))
+        cout<<"Archivo Ganadores borrado"<<endl;
+    else
+        cerr<<"Error al encontrar el archivo o no existe"<<endl;   
+    
+    switch (seleccion)
+    if (!remove("dead_ends.txt"))
+        cout<<"Archivo Ganadores borrado"<<endl;
+    else
+        cerr<<"Error al encontrar el archivo o no existe"<<endl;   
+    
+    if (!remove("dead_ends2.txt"))
+        cout<<"Archivo Ganadores borrado"<<endl;
+    else
+        cerr<<"Error al encontrar el archivo o no existe"<<endl;   
     
     switch (seleccion)
     {
@@ -39,13 +51,12 @@ void menu(){
                 cad1.back()='r';
                 cout<<"Se agrego una r al final para que sirva el automata"<<endl<<cad1<<endl;
             }
-            if (cad2.back()!='b')
-            {
+            if (cad2.back()!='b'){
                 cad2.back()='b';
                 cout<<"Se agrego una b al final para que sirva el automata"<<endl<<cad2<<endl;
             }
 
-            //inizializador(cad1,cad2);
+            inizializador(cad1,cad2);
             break;
             //Manual
         case 2:
@@ -93,34 +104,10 @@ void menu(){
                     cout<<"Se agrego una b al final para que sirva el automata"<<endl<<cad2<<endl;
                 }
             }
-            //inizializador(cad1,cad2);
+            inizializador(cad1,cad2);
             break;
         default:
             break;
     }
-    
 }
 
-
-int main(){
-
-    char opc;
-    do
-    {
-        system("clear");
-        cout<<"-----1)Generar nuevos movimientos?"<<endl;
-        cout<<"-----2)Utilizar movimientos ya generados"<<endl<<"->";
-        int sel;
-        cin>>sel;
-        cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-        if (sel==1)
-            menu();
-        else
-
-        cout<<"Repetir? (Y/N)";
-        cin>>opc;
-    } while (opc!='n' || opc!='N');
-    
-     
-    return 0;
-}

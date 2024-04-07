@@ -1,144 +1,162 @@
 import pygame
 import re
-def verificar(fila_1, columna_1, fila_2, columna_2):
-    if fila_1 == fila_2 and columna_1 == columna_2:
-        return True
-    
+import random
+
+# Inicializa Pygame
+pygame.init()
+pygame.font.init()
 
 def dibujar_tablero(ventana):
     NEGRO = (0, 0, 0)
     ROJO = (255, 0, 0)
-    FILAS = 4
-    COLUMNAS = 4
-    ANCHO_TABLERO = 400
-    ALTO_TABLERO = 400
+    FILAS, COLUMNAS = 4, 4
+    ANCHO_TABLERO, ALTO_TABLERO = 400, 400
 
     for fila in range(FILAS):
         for columna in range(COLUMNAS):
             color = NEGRO if (fila + columna) % 2 == 0 else ROJO
-            pygame.draw.rect(ventana, color, (columna * ANCHO_TABLERO / COLUMNAS, fila * ALTO_TABLERO / FILAS, ANCHO_TABLERO / COLUMNAS, ALTO_TABLERO / FILAS))
+            rect = (columna * ANCHO_TABLERO / COLUMNAS, fila * ALTO_TABLERO / FILAS, ANCHO_TABLERO / COLUMNAS, ALTO_TABLERO / FILAS)
+            pygame.draw.rect(ventana, color, rect)
 
-def dibujar_pieza_1(ventana, fila, columna):
-    AZUL = (0, 0, 255)
-    ANCHO_TABLERO = 400
-    ALTO_TABLERO = 400
-    FILAS = 4
-    COLUMNAS = 4
+def estado_a_posicion(estado):
+    FILAS, COLUMNAS = 4, 4
+    ANCHO_TABLERO, ALTO_TABLERO = 400, 400
+    fila, columna = (estado - 1) // COLUMNAS, (estado - 1) % COLUMNAS
+    return columna * ANCHO_TABLERO / COLUMNAS, fila * ALTO_TABLERO / FILAS
 
-    pygame.draw.polygon(ventana, AZUL, [(columna * ANCHO_TABLERO / COLUMNAS + ANCHO_TABLERO / (2 * COLUMNAS), fila * ALTO_TABLERO / FILAS), ((columna + 1) * ANCHO_TABLERO / COLUMNAS, (fila + 1) * ALTO_TABLERO / FILAS), (columna * ANCHO_TABLERO / COLUMNAS, (fila + 1) * ALTO_TABLERO / FILAS)])
+def dibujar_pieza(ventana, estado, color):
+    x, y = estado_a_posicion(estado)
+    if color == "AZUL":
+        pygame.draw.polygon(ventana, (0, 0, 255), [(x + 50, y), (x + 100, y + 50), (x, y + 50)])
+    elif color == "VERDE":
+        centro = (int(x + 50), int(y + 25))
+        pygame.draw.circle(ventana, (0, 255, 0), centro, 20)
 
-def dibujar_pieza_2(ventana, fila, columna):
-    VERDE = (0, 255, 0)
-    ANCHO_TABLERO = 400
-    ALTO_TABLERO = 400
-    FILAS = 4
-    COLUMNAS = 4
+def leer_ruta_desde_archivo(nombre_archivo):
+    patron = re.compile(r'\b\d+\b')
+    with open(nombre_archivo, "r") as archivo:
+        linea = archivo.readline()
+        ruta=list(map(int,patron.findall(linea)))
+        #int(n) for n in patron.findall(linea)
+        return ruta
+    
+def ruta_nueva(nombre_archivo, estado_buscado, indice_buscado):
+    import re
+    patron = re.compile(r'\b\d+\b')
+    
+    # Leer todas las rutas del archivo y convertirlas en listas de enteros
+    with open(nombre_archivo, "r") as archivo:
+        rutas = [list(map(int, patron.findall(linea))) for linea in archivo]
 
-    pygame.draw.circle(ventana, VERDE, (int((columna * ANCHO_TABLERO / COLUMNAS) + (ANCHO_TABLERO / (2 * COLUMNAS))), int((fila * ALTO_TABLERO / FILAS) + (ALTO_TABLERO / (2 * FILAS)))), int(min(ANCHO_TABLERO / COLUMNAS, ALTO_TABLERO / FILAS) * 0.4))
+    # Filtrar las rutas para encontrar aquellas que tienen el estado buscado en el índice buscado
+    rutas_validas = [ruta for ruta in rutas if len(ruta) > indice_buscado and ruta[indice_buscado] == estado_buscado]
+
+    # Si no se encuentran rutas válidas, se puede retornar la ruta actual o manejar de otra manera
+    if not rutas_validas:
+        print("No se encontraron rutas válidas.")
+        return None
+
+    # Selecciona aleatoriamente una de las rutas válidas
+    nueva_ruta = random.choice(rutas_validas)
+
+    return nueva_ruta
 
 
 def main():
-
-    ANCHO_VENTANA = 400
-    ALTO_VENTANA = 400
-    COLUMNAS = 4
-
-    movimientos_1 = leer_ruta_desde_archivo("winis.txt")
-    movimientos_2 = leer_ruta_desde_archivo("Winis2.txt")
-
-    ventana = pygame.display.set_mode((ANCHO_VENTANA, ALTO_VENTANA))
+    ventana = pygame.display.set_mode((400, 400))
     pygame.display.set_caption("Tablero de Ajedrez")
 
-    posicion_actual_1 = 0
-    posicion_actual_2 = 0
-    fila_1 = 0
-    columna_1 = 0
-    fila_2 = 0
-    columna_2 = 4
+    # Supongamos que estas funciones leen los estados iniciales de las piezas desde los archivos
+    estados1 = leer_ruta_desde_archivo("Ganadores_1.txt")
+    print(estados1)
+    estados2 = leer_ruta_desde_archivo("Ganadores_2.txt")
+    print(estados2)
+    clock = pygame.time.Clock()
 
-    posicion_actual_1_T = 1
-    posicion_actual_2_T = 1
-    fila_1_T = 0
-    columna_1_T = 0
-    fila_2_T = 0
-    columna_2_T = 4
-
+    fuente =pygame.font.SysFont('arial', 30)
+    fin_del_juego=False
     running = True
+    indice1, indice2 = 0, 0  # Índices para seguir el progreso de cada pieza a través de sus estados
+
+
     while running:
-        if running:
-            dibujar_tablero(ventana)
-
-
-            if posicion_actual_1 < len(movimientos_1):
-                movimiento = movimientos_1[posicion_actual_1]
-                fila_1 = (movimiento - 1) // COLUMNAS
-                columna_1 = (movimiento - 1) % COLUMNAS
-                dibujar_pieza_1(ventana, fila_1, columna_1)
-            
-            if posicion_actual_2 < len(movimientos_2):
-                movimiento = movimientos_2[posicion_actual_2]
-                fila_2 = (movimiento - 1) // COLUMNAS
-                columna_2 = (movimiento - 1) % COLUMNAS
-                dibujar_pieza_2(ventana, fila_2, columna_2)
-
-
-            if posicion_actual_1_T < len(movimientos_1):
-                movimiento = movimientos_1[posicion_actual_1_T]
-                fila_1_T = (movimiento - 1) // COLUMNAS
-                columna_1_T = (movimiento - 1) % COLUMNAS
-            
-            if posicion_actual_2_T < len(movimientos_2):
-                movimiento = movimientos_2[posicion_actual_2_T]
-                fila_2_T = (movimiento - 1) // COLUMNAS
-                columna_2_T = (movimiento - 1) % COLUMNAS
-
-            
-             # Verificar si las piezas están a punto de llegar a la misma casilla
-            if verificar(fila_1_T, columna_1_T, fila_2_T, columna_2_T):
-                print("¡Las piezas están a punto de llegar a la misma casilla!")
-                print("Movimiento",movimientos_1[posicion_actual_1], posicion_actual_1)
-                movimientos_1  = ruta_nueva("winis.txt",movimientos_1[posicion_actual_1],posicion_actual_1)
-                print(movimientos_1)
-                posicion_actual_1 = posicion_actual_1 -1
-                movimiento = movimientos_1[posicion_actual_1]
-                pygame.time.wait(10000) 
-            
-             
-            pygame.display.flip()
-            pygame.time.delay(1500)
-            posicion_actual_1 += 1
-            posicion_actual_2 += 1
-            posicion_actual_1_T += 1
-            posicion_actual_2_T += 1
-                
-
-            max_len = [len(movimientos_1), len(movimientos_2)]
-
-            # Cerrar ventana
-            if max(max_len) == posicion_actual_1:
-                pygame.time.delay(2500)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 running = False
+
+        ventana.fill((255, 255, 255))
+        dibujar_tablero(ventana)
+
+        # Add a boolean flag to indicate if the game is esperar for a piece to move
+        esperar = False
+
+        if not fin_del_juego:
+            if indice1 < len(estados1) and indice2 < len(estados2):
+                # Check for collision
+                if estados1[indice1] == estados2[indice2]:
+                    print("Choque potencia detectado")
+
+                    # Se decide Aleatoriamente que pieza va a esperar\
+                    if random.choice([True, False]):
+                        # Pieza 1 espera, mientras pieza 2 avanza
+                        #restamos el indice, para que busque desde el movimiento pasdado, asi pueda continuar a otro
+                        nueva_ruta2 = ruta_nueva("Ganadores_2.txt", estados2[indice2], indice2)
+                        while nueva_ruta2[indice2-1]!= estados2[indice2-1]:
+                            if nueva_ruta2 is not None:
+                                nueva_ruta2= ruta_nueva("Ganadores_2.txt",estados2[indice2], indice2)
+                            else: break
+                        indice2-=1
+                        if nueva_ruta2 is not None:
+                            estados2 = nueva_ruta2
+                            print("La segunda pieza ha encontrado otro camino.", nueva_ruta2)
+                        else:
+                            print("No se ha encontrado otra ruta, esperando...")
+                            esperar = True
+                    else:
+                        # Piece 2 waits, Piece 1 finds a new route
+                        nueva_ruta1 = ruta_nueva("Ganadores_1.txt", estados1[indice1], indice1)
+                        while nueva_ruta1[indice1-1]!= estados1[indice1-1]:
+                            if nueva_ruta1 is not None:
+                                nueva_ruta1= ruta_nueva("Ganadores_1.txt",estados1[indice1], indice1)
+                            else: break
+                        indice1-=1
+                        if nueva_ruta1 is not None:
+                            estados1 = nueva_ruta1
+                            print("La primera pieza ha encontrado otro camino.",nueva_ruta1)
+                        else:
+                            print("No se ha encontrado otra ruta, esperando...")
+                            esperar = True
+                    
+                    # Si una nueva ruta se ha encontrado, se mueven de inmediato
+                    #sino, esperan
+
+                # Si no esperan, muevelas
+                if not esperar:
+                    if indice1 < len(estados1):
+                        dibujar_pieza(ventana, estados1[indice1], "AZUL")
+                        indice1 += 1
+                    if indice2 < len(estados2):
+                        dibujar_pieza(ventana, estados2[indice2], "VERDE")
+                        indice2 += 1
+            elif indice1 < len(estados1):  #si la otra pieza acabo, que solo se mueva la 1
+                dibujar_pieza(ventana, estados1[indice1], "AZUL")
+                indice1 += 1
+            elif indice2 < len(estados2):  # si la otra pieza acabo, que solamente se mueva la 2
+                dibujar_pieza(ventana, estados2[indice2], "VERDE")
+                indice2 += 1
+            else:
+                # No hay mas movimeintos, terminar el juego
+                fin_del_juego = True
+        else:
+            mensaje = fuente.render('Fin del juego, no hay más rutas', True, (255, 255, 255))
+            rect = mensaje.get_rect(center=(200, 200))
+            ventana.blit(mensaje, rect)
+
+        pygame.display.flip()
+        clock.tick(1)  
+
     pygame.quit()
 
-
-def leer_ruta_desde_archivo(nombre_archivo):
-    
-    with open(nombre_archivo, "r") as archivo:
-        primera_linea = archivo.readline()
-        ruta = list(map(int, primera_linea.strip().strip("[q<-|br']").split(", ")))
-    return ruta
-
-def ruta_nueva(nombre_archivo, movimiento, posicion):
-
-    with open(nombre_archivo, "r") as archivo:
-        lineas = archivo.readlines()
-
-        # Procesar cada línea del archivo
-        for linea in lineas:
-            ruta = list(map(int, linea.strip().strip("[]").split(",")))
-            if movimiento != ruta[posicion]:
-                print(f"{movimiento} != {ruta[posicion]}")
-                return ruta
 
 if __name__ == "__main__":
     main()

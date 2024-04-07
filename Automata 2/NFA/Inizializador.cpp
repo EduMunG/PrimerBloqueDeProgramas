@@ -1,7 +1,9 @@
 #include "./NFA.cpp"
 #include "string"
 
-int inizializador(std::string movimientos1, std::string movimientos2)
+
+
+void inizializador(std::string movimientos1, std::string movimientos2)
 {
     
     set<State> estados;
@@ -48,7 +50,7 @@ int inizializador(std::string movimientos1, std::string movimientos2)
     Alfabeto a(alfa, falla);
     NFA nfa= *new NFA(a,estados,q1,final);
     std::string deadEnds="dead_ends.txt";
-    std::string wining="winis.txt";
+    std::string wining="Ganadores_1.txt";
     std::vector<int> pathStack;
     std::string camino="";
     set<State> visitados;
@@ -60,6 +62,5 @@ int inizializador(std::string movimientos1, std::string movimientos2)
     final2.insert(q13);
     set<State> visitados2;
     NFA nfa2 = *new NFA(a,estados,q4,final2);
-    nfa2.depthSearch(movimientos2,q4.identifier,camino,"dead_ends2.txt","Winis2.txt",visitados2);    
-    return 0;
+    nfa2.depthSearch(movimientos2,q4.identifier,camino,"dead_ends2.txt","Ganadores_2.txt",visitados2);    
 }

@@ -1,3 +1,11 @@
+/* 
+
+    EDUARDO MUÑOZ GONZÁLEZ 5BM2
+    ESCOM 
+    TEORIA DE LA COMPUTACION
+    DEFINICION DE UN NFA    
+ */
+
 #include "./NFA.hpp"
 
 NFA::NFA():
@@ -140,15 +148,15 @@ void NFA:: depthSearch(std::string cadena, int idActual, std::string caminoActua
     
     if(cadena.empty()){
         if (aceptabe(getEstado(idActual)))
-            escribirPath(winingPaths,caminoActual+" q"+std::to_string(idActual)+"|");
+            escribirPath(winingPaths,caminoActual+" q "+std::to_string(idActual)+"|");
         else
-            escribirPath(deadEnds,caminoActual+" q"+std::to_string(idActual)+"o|");
+            escribirPath(deadEnds,caminoActual+" q "+std::to_string(idActual)+"o|");
         visitados.erase(getEstado(idActual));
         return;
     } 
     char simbolo= cadena.front();
     //cout<<" Simbolo: "<<simbolo<<endl;
-    caminoActual+="q"+std::to_string(idActual)+"<-'"+simbolo+"' ";
+    caminoActual+="q "+std::to_string(idActual)+"<-'"+simbolo+"' ";
     //cout<<caminoActual<<endl;
     cadena=cadena.substr(1);
     //cout<<endl<<" Cadena: "<<cadena;

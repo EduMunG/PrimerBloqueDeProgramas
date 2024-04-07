@@ -1,3 +1,12 @@
+/* 
+
+    EDUARDO MUÑOZ GONZÁLEZ 5BM2
+    ESCOM 
+    TEORIA DE LA COMPUTACION
+    DEFINICION DE UN DFA
+ */
+
+
 #include "./DFA.hpp"
 #include <fstream>
 

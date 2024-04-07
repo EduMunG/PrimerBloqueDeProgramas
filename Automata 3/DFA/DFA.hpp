@@ -1,7 +1,14 @@
-#include "../../Definicion/Alfabeto/Alfabeto.cpp"
-#include "../../Definicion/Estados/Estados.cpp"
-/* ATENCION!!! ACuerdate que nada mas copiaste la clase que hiciste del NFA. Borra metoods y cambia cosas */
+/* ATENCION!!! ACuerdate que nada mas copiaste la clase que hiciste del NFA. Borra metoods y cambia cosas 
 
+
+    EDUARDO MUÑOZ GONZÁLEZ 5BM2
+    ESCOM 
+    TEORIA DE LA COMPUTACION
+    DEFINICION DE UN DFA
+ */
+
+#include "../../Definicion/Alfabeto/Alfabeto.hpp"
+#include "../../Definicion/Estados/Estados.hpp"
 class DFA
 {
 private:

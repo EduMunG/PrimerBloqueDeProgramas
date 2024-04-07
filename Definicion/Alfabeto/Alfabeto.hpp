@@ -1,6 +1,13 @@
 /* 
-    Header para la clase alfabeto
+
+    EDUARDO MUÑOZ GONZÁLEZ 5BM2
+    ESCOM 
+    TEORIA DE LA COMPUTACION
+    DEFINICION DE ALFABETO
  */
+#pragma once
+
+
 
 #include <cstdio>
 #include <set>

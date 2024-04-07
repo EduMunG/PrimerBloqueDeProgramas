@@ -1,3 +1,11 @@
+/* 
+
+    EDUARDO MUÑOZ GONZÁLEZ 5BM2
+    ESCOM 
+    TEORIA DE LA COMPUTACION
+    DEFINICION DE TRANSICIONES
+ */
+
 #include "./Transiciones.hpp"
 
 Transiciones:: Transiciones():
